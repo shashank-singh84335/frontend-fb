@@ -1,0 +1,15 @@
+.p-multiselect-filter{
+    background-color: #f5f5f5;
+    border: 1px solid #ced4da;
+    height: 2.2rem;
+}
+.p-multiselect-filter:focus{
+    outline: none;
+}
+.p-checkbox-box{
+    /* background-color: #f5f5f5; */
+    border: 1px solid #ced4da;
+}
+.p-checkbox-box p-highlight{
+    color: red;
+}
