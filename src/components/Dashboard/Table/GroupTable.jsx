@@ -13,22 +13,25 @@ const DataTable = ({ data }) => {
       <table className="min-w-full bg-white dark:bg-black">
         <thead>
           <tr>
-            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[5%]">
+            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[20%]">
               ID
             </th>
-            <th className="py-5 text-left uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[19%]">
+            <th className="py-5 text-left uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[20%]">
               Group Name
             </th>
             {/* <th className="py-5 text-left uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[19%]">
               Time
             </th> */}
-            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[5%]">
+            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[20%]">
+              Total Pages
+            </th>
+            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[20%]">
               Date
             </th>
             {/* <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[19%]">
               Tag
             </th> */}
-            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[19%]">
+            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[20%]">
               Status
             </th>
           </tr>
@@ -45,22 +48,25 @@ const DataTable = ({ data }) => {
                 navigate(`/dashboard/${item.id}`);
               }}
             >
-              <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[5%] text-center">
+              <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[20%] text-center">
                 {item.id}
               </td>
-              <td className="py-5 truncate px-4 border-b dark:border-b-gray-600 w-[19%]">
+              <td className="py-5 truncate px-4 border-b dark:border-b-gray-600 w-[20%]">
                 {item.name}
               </td>
               {/* <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[19%] ">
                 {item.group_name ? item.group_name : "N/A"}
               </td> */}
-              <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[19%] text-center">
+              <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[20%] text-center">
+                {item.total_pages ? item.total_pages : "N/A"}
+              </td>
+              <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[20%] text-center">
                 {item.date ? item.date : "N/A"}
               </td>
               {/* <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[19%] text-center">
                 {item.tag ? item.tag : "N/A"}
               </td> */}
-              <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[15%] text-center">
+              <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[20%] text-center">
                 <h1
                   className={`p-2  
                   bg-[#ccf0eb] text-[#00B69B]

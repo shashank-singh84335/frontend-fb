@@ -9,7 +9,7 @@ const DataTable = ({ data }) => {
   const navigate = useNavigate();
   const { state, setState } = useAppState();
   return (
-    <div className="overflow-x-auto border-2 dark:border-gray-600 rounded-2xl w-full">
+    <div className="overflow-x-auto border-2 dark:border-gray-600 rounded-2xl w-full min-h-screen">
       <table className="min-w-full bg-white dark:bg-black">
         <thead>
           <tr>
@@ -49,7 +49,7 @@ const DataTable = ({ data }) => {
               //   className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
               className="text-sm hover:bg-[#f5f6fa] dark:hover:bg-darkprimary cursor-pointer duration-300 transform-all"
               onClick={() => {
-                navigate(`/dashboard/${item.campaign_id}`);
+                navigate(`/dashboard/${item.id}`);
                 setState("specificCampaign");
               }}
             >
@@ -60,13 +60,13 @@ const DataTable = ({ data }) => {
                 {item?.name?item?.name:"N/A"}
               </td>
               <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[10%] text-center">
-                {item?.pending?item?.pending:"N/A"}
+                {item?.pending?item?.pending:"0"}
               </td>
               <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[10%] text-center">
-                {item?.success?item?.success:"N/A"}
+                {item?.success?item?.success:"0"}
               </td>
               <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[10%] text-center">
-                {item?.failed?item?.failed:"N/A"}
+                {item?.failed?item?.failed:"0"}
               </td>
               <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[15%] text-center">
                 {item?.start_date?item?.start_date:"N/A"}

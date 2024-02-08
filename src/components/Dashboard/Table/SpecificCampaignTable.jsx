@@ -33,40 +33,40 @@ const DataTable = ({ data }) => {
           </tr>
         </thead>
         <tbody>
-          {/* {data?.map((item, index) => ( */}
+          {data?.map((item, index) => ( 
             <tr
-              // key={index}
+              key={index}
               //   className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
               //   className="hover:bg-[#f5f6fa] dark:hover:bg-darkprimary cursor-pointer duration-300 transform-all"
             >
               <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[5%] text-center">
-                {data?.id? data?.id : "N/A"}
+                {item.id ? item.id : "N/A"}
               </td>
               <td className="py-5 truncate px-4 border-b dark:border-b-gray-600 w-[19%]">
-                {data?.name? data?.name : "N/A"}
+                {item?.name? item?.name : "N/A"}
               </td>
               <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[19%] ">
-                {data?.account_name? data?.account_name : "N/A"}
+                {item?.account_name? item?.account_name : "N/A"}
               </td>
               <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[19%] text-center">
-                {data?.post_date?convertTimestamp(data?.post_date):"N/A"}
+                {item?.post_date?item?.post_date:"N/A"}
               </td>
               {/* <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[19%] text-center">
-                {data?.tag}
+                {item?.tag}
               </td> */}
               <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[19%] text-center">
                 <h1
                   className={`p-2 ${
-                    data?.state == "Success"
+                    item?.state == "Success"
                       ? "bg-[#ccf0eb] text-[#00B69B]"
                       : "bg-[#e0d4fc] text-[#6226EF]"
                   } rounded-md font-bold`}
                 >
-                  {data?.state}
+                  {item?.state}
                 </h1>
               </td>
             </tr>
-          {/* ))} */}
+         ))} 
         </tbody>
       </table>
     </div>

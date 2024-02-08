@@ -20,6 +20,9 @@ const DataTable = ({ data }) => {
               Name
             </th>
             <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[19%]">
+              Total Pages
+            </th>
+            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[19%]">
               Other Name
             </th>
             {/* <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[19%]">
@@ -51,6 +54,9 @@ const DataTable = ({ data }) => {
               </td>
               <td className="py-5 truncate px-4 border-b dark:border-b-gray-600 w-[19%]">
                 {item.name}
+              </td>
+              <td className="py-5 truncate px-4 border-b dark:border-b-gray-600 w-[19%] text-center">
+                {item.total_page ? item.total_page : "-"}
               </td>
               <td className="py-5 truncate px-4 border-b dark:border-b-gray-600 w-[19%] text-center">
                 {item.other_name ? item.other_name : "-"}

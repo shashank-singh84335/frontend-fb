@@ -10,22 +10,22 @@ const DataTable = ({ data }) => {
       <table className="min-w-full bg-white dark:bg-black">
         <thead>
           <tr>
-            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[10%]">
+            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[33%]">
               ID
             </th>
-            <th className="py-5 text-left uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[45%]">
+            <th className="py-5 text-left uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[33%]">
               Name
             </th>
-            {/* <th className="py-5 text-left uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[45%]">
+            {/* <th className="py-5 text-left uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[33%]">
               State
             </th> */}
-            {/* <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[19%]">
+            {/* <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[33%]">
               Post Date
             </th> */}
-            {/* <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[19%]">
+            {/* <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[33%]">
               Tag
             </th> */}
-            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[19%]">
+            <th className="py-5 uppercase text-sm px-4 border-b dark:border-b-gray-600 w-[33%]">
               Status
             </th>
           </tr>

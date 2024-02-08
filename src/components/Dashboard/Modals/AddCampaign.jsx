@@ -19,6 +19,8 @@ const AddCampaign = ({ close }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [attachedFile, setAttachedFile] = useState(null);
   const [countries, setCountries] = useState([]);
+  const [contentType, setContentType] = useState("feed")
+  const [totalPagesCount, setTotalPagesCount] = useState(0)
   const countryTemplate = (option) => {
     return (
       <div className="flex align-items-center">
@@ -41,6 +43,7 @@ const AddCampaign = ({ close }) => {
     );
   };
   const handleFileChangeVideo = (e) => {
+    setContentType("videos");
     const file = e.target.files[0];
     const type=file.type.split("/")[0];
     console.log(type)
@@ -61,6 +64,7 @@ const AddCampaign = ({ close }) => {
     }
   };
   const handleFileChangeImage = (e) => {
+    setContentType("photos");
     const file = e.target.files[0];
     const type = file.type.split("/")[0];
     console.log(type);
@@ -100,7 +104,7 @@ const AddCampaign = ({ close }) => {
   };
   useEffect(() => {
     const fetchdata = async () => {
-      const response = await fetch(`${BASE_URL}/campaign/`, {
+      const response = await fetch(`${BASE_URL}/group/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -113,8 +117,12 @@ const AddCampaign = ({ close }) => {
     };
     fetchdata();
   }, []);
+  function extractIds(arrayOfObjects) {
+    return arrayOfObjects.map((obj) => obj.id);
+  }
   const handleClick = async() => {
-    // console.log(campaignName, selectedCountries, tag, content, attachedFile);
+    const array_data=extractIds(selectedCountries);
+    console.log(campaignName,array_data, tag, content,contentType, attachedFile,typeof(array_data));
     if (!campaignName,! selectedCountries,! tag,! content) {
       toast.error('Enter all fields', {
         position: 'top-right',
@@ -129,53 +137,56 @@ const AddCampaign = ({ close }) => {
       });
       return;
     }
-    const transformedArray = selectedCountries.map((item) => item.id);
     try {
-      const response = await fetch(`${BASE_URL}/campaign/`, {
-        method: "POST",
+    const formData = new FormData();
+    formData.append('name', campaignName);
+    formData.append('tag', tag);
+    formData.append('caption', content);
+    formData.append('content_type', contentType);
+    if(attachedFile)
+    {
+      formData.append("media_file", attachedFile);
+    }
+    // formData.append('groups', array_data);
+    array_data.forEach((item, index) => {
+      formData.append(`groups[${index}]`, item);
+    });
+    const response = await fetch(`${BASE_URL}/campaign/`, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("access_token")}`,
+            Authorization: `Bearer ${Cookies.get("access_token")}`,
         },
-        body: JSON.stringify({
-          name: campaignName,
-          groups: transformedArray,
-          tag: tag,
-          caption: content,
-          content_type: "post",
-          media_url: attachedFile,
-        }),
-      });
-
-      const data = await response.json();
-      if (data.status === 10000) {
-        toast.success('Campaign created successfully', {
-          position: 'top-right',
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-          transition: Slide,
+        body: formData,
+    });
+    const data = await response.json();
+    if (data.status === 10000) {
+        toast.success(data.message, {
+            position: 'top-right',
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+            transition: Slide,
         });
         close();
-      }
-      else {
-        toast.error('Failed to create campaign', {
-          position: 'top-right',
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-          transition: Slide,
+    } else {
+        toast.error(data.message, {
+            position: 'top-right',
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+            transition: Slide,
         });
-      }
-    } catch (error) {
+    }
+} 
+ catch (error) {
         toast.error("Failed to create campaign", {
           position: "top-right",
           autoClose: 2500,
@@ -224,7 +235,7 @@ const AddCampaign = ({ close }) => {
             options={countries}
             onChange={(e)=>setSelectedCountries(e.value)}
             optionLabel="name"
-            placeholder="Select Pages"
+            placeholder="Select Groups"
             itemTemplate={countryTemplate}
             panelFooterTemplate={panelFooterTemplate}
             className="w-full border focus:outline-none dark:bg-black"
@@ -235,11 +246,11 @@ const AddCampaign = ({ close }) => {
           />
         </div>
         <div className="flex flex-col gap-1 w-full">
-          <label className="text-sm">Type of Message</label>
+          <label className="text-sm">Platform</label>
           <input
             type="text"
             placeholder="Enter Tag"
-            value={"POST"}
+            value={"Facebook Pages"}
             disabled
             onChange={(e) => setTag(e.target.value)}
             className="border disabled:cursor-not-allowed p-2 rounded-md dark:bg-black dark:border-gray-500"
