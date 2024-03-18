@@ -11,6 +11,9 @@ export default {
         darkprimary:"#26282A"
       },
     },
+    screens:{
+      'sm':'1000px'
+    }
   },
   plugins: [],
   darkMode: ["class"],

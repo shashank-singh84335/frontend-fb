@@ -104,7 +104,7 @@ const AddCampaign = ({ close }) => {
   };
   useEffect(() => {
     const fetchdata = async () => {
-      const response = await fetch(`${BASE_URL}/group/`, {
+      const response = await fetch(`${BASE_URL}/group/?limit=10000`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -120,24 +120,38 @@ const AddCampaign = ({ close }) => {
   function extractIds(arrayOfObjects) {
     return arrayOfObjects.map((obj) => obj.id);
   }
+  const [buttonClicked, setButtonClicked] = useState(false)
   const handleClick = async() => {
-    const array_data=extractIds(selectedCountries);
-    console.log(campaignName,array_data, tag, content,contentType, attachedFile,typeof(array_data));
-    if (!campaignName,! selectedCountries,! tag,! content) {
-      toast.error('Enter all fields', {
-        position: 'top-right',
+    if ((!campaignName, !selectedCountries, !tag, !content)) {
+      toast.error("Enter all fields", {
+        position: "top-right",
         autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: 'colored',
+        theme: "colored",
         transition: Slide,
       });
       return;
     }
+    const array_data=extractIds(selectedCountries);
+    console.log(campaignName,array_data, tag, content,contentType, attachedFile,typeof(array_data));
+    
     try {
+      const toa = toast.loading("Creating Campaign. Do not refresh!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
+      setButtonClicked(true);
     const formData = new FormData();
     formData.append('name', campaignName);
     formData.append('tag', tag);
@@ -160,29 +174,33 @@ const AddCampaign = ({ close }) => {
     });
     const data = await response.json();
     if (data.status === 10000) {
-        toast.success(data.message, {
-            position: 'top-right',
-            autoClose: 2500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-            transition: Slide,
+        toast.update(toa, {
+          render:data.message,
+          type: "success",
+          isLoading: false,
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Slide,
         });
         close();
     } else {
-        toast.error(data.message, {
-            position: 'top-right',
-            autoClose: 2500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-            transition: Slide,
+        toast.update(toa, {
+          render: data.message,
+          type: "error",
+          isLoading: false,
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Slide,
         });
     }
 } 
@@ -200,10 +218,11 @@ const AddCampaign = ({ close }) => {
         });
       console.error('Error creating campaign:', error);
     }
+    setButtonClicked(false);
   };
   return (
     <div className="fixed flex justify-center items-center z-30 p-4 inset-0  backdrop-blur-sm backdrop-brightness-50 w-full">
-      <div className="flex gap-4 flex-col w-[90%] h-[90%] p-8 overflow-y-auto rounded-md bg-white dark:bg-[#3b3b3b]">
+      <div className="flex gap-4 flex-col w-full sm:w-[90%] h-[90%] p-8 overflow-y-auto rounded-md bg-white dark:bg-[#3b3b3b]">
         <div className="flex justify-between h-[3rem] items-center">
           <div className="flex items-center ">
             <h1 className="text-2xl font-bold">Add Campaign</h1>
@@ -328,7 +347,11 @@ const AddCampaign = ({ close }) => {
           />
         </div>
         <div className="flex justify-center" onClick={handleClick}>
-          <button className="bg-primary hover:bg-[#142065] text-xl text-white rounded-md px-4 py-3 mt-4 transform-all duration-300">
+          <button className="bg-primary hover:bg-[#142065] text-xl text-white rounded-md px-4 py-3 mt-4 transform-all duration-300
+          disabled:cursor-not-allowed disabled:bg-gray-400 disabled:text-gray-800 disabled:hover:bg-gray-400 disabled:hover:text-gray-800
+          "
+          disabled={buttonClicked}
+          >
             Create Campaign
           </button>
         </div>

@@ -1,12 +1,10 @@
 /* eslint-disable react/prop-types */
-import { Paperclip, Smile, X } from "lucide-react";
+import { X } from "lucide-react";
 import { MultiSelect } from "primereact/multiselect";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
 import "primereact/resources/primereact.min.css"; //core css
 import "./style.css";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
 import { Slide, toast } from "react-toastify";
 import { BASE_URL } from "./../../../data";
 import Cookies from "js-cookie";
@@ -118,7 +116,7 @@ useEffect(() => {
 }, [selectedPages])
   useEffect(() => {
     const fetchdata=async()=>{
-      const response = await fetch(`${BASE_URL}/fb/account/`, {
+      const response = await fetch(`${BASE_URL}/fb/account/?limit=10000`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -131,23 +129,15 @@ useEffect(() => {
     }
     fetchdata();}
   , []);
-  // const handleCheckboxChange = (e) => {
-  //   console.log(e)
-  //   const selectedPage = {
-  //     account_page_id: e.selectedOption.id,
-  //   };
-
-  //   const isSelected = selectedPages.some(page => page.account_page_id === selectedPage.account_page_id);
-
-  //   if (!isSelected) {
-  //     setSelectedPages(prevSelectedPages => [...prevSelectedPages, selectedPage]);
-  //   } else {
-  //     setSelectedPages(prevSelectedPages => prevSelectedPages.filter(page => page.account_page_id !== selectedPage.account_page_id));
-  //   }
-  // }
+  const handleScroll = (event) => {
+    const target = event.target;
+    if (target.scrollHeight - target.scrollTop === target.clientHeight) {
+      console.log('Reached end of scrolling');
+    }
+  };
   return (
     <div className="fixed flex justify-center items-center z-30 p-4 inset-0  backdrop-blur-sm backdrop-brightness-50 w-full">
-      <div className="flex gap-4 flex-col w-[70%] h-[70%] p-8 overflow-y-auto rounded-md bg-white dark:bg-[#3b3b3b]">
+      <div className="flex gap-4 flex-col w-full sm:w-[70%] h-[70%] p-8 overflow-y-auto rounded-md bg-white dark:bg-[#3b3b3b]">
         <div className="flex justify-between h-[3rem] items-center">
           <div className="flex items-center">
             <h1 className="text-2xl font-bold">Add Group</h1>
@@ -177,7 +167,7 @@ useEffect(() => {
           <MultiSelect
             value={selectedPages}
             options={countries}
-            onChange={(e)=>setSelectedPages(e.value)}
+            onChange={(e) => setSelectedPages(e.value)}
             optionLabel="name"
             placeholder="Select Accounts"
             itemTemplate={countryTemplate}
@@ -187,77 +177,9 @@ useEffect(() => {
             filter
             filterValue={countryFilter}
             onFilterValueChange={(e) => setCountryFilter(e.value)}
+            onScroll={handleScroll}
           />
         </div>
-        {/* <div className="flex flex-col gap-1 w-full">
-          <label className="text-sm">Type of Message</label>
-          <input
-            type="text"
-            placeholder="Enter Tag"
-            value={"POST"}
-            disabled
-            onChange={(e) => setTag(e.target.value)}
-            className="border disabled:cursor-not-allowed p-2 rounded-md dark:bg-black dark:border-gray-500"
-          />
-        </div>
-        <div className="flex flex-col w-full">
-          <div className="flex w-full">
-            <textarea
-              className="w-full border-t border-l border-r rounded-t-xl p-2 items-center flex dark:border-gray-500 dark:bg-black"
-              rows={6}
-              placeholder="Type your content here..."
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-          </div>
-          <div className="flex items-center dark:border-gray-500   border bg-[#f5f5f5] gap-2 rounded-b-xl dark:bg-[#3b3b3b] p-4">
-            <div className="flex hover:bg-primary dark:hover:bg-primary hover:text-white transform-all duration-300 cursor-pointer items-center gap-2 bg-white dark:bg-black  dark:border-gray-500 rounded-md p-3 text-gray-500 dark:text-gray-100 ">
-              <label htmlFor="fileInput" className="cursor-pointer">
-                <Paperclip size={20} className="" />
-                <input
-                  id="fileInput"
-                  type="file"
-                  className="hidden"
-                  onChange={handleFileChange}
-                />
-              </label>
-            </div>
-            <div
-              className="flex hover:bg-primary dark:hover:bg-primary hover:text-white transform-all duration-300 cursor-pointer items-center gap-2 bg-white dark:bg-black dark:border-gray-500 rounded-md p-3 text-gray-500 dark:text-gray-100 emoji_picker"
-              onClick={() => setShowEmojiPicker(true)}
-            >
-              <Smile size={20} />
-            </div>
-            {showEmojiPicker && (
-              <div className="absolute ml-[15rem] emoji_picker flex items-center justify-center">
-                <Picker data={data} onEmojiSelect={handleEmojiSelect} />
-              </div>
-            )}
-            <div className="flex justify-end w-full">
-              {attachedFile && (
-                <div className="flex gap-4 items-center">
-                  <span className="text-sm">{attachedFile.name}</span>
-                  <button
-                    className="bg-primary text-white p-2 rounded-md"
-                    onClick={() => setAttachedFile(null)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-1 w-full">
-          <label className="text-sm">Add Tag</label>
-          <input
-            type="text"
-            placeholder="Enter Tag"
-            value={tag}
-            onChange={(e) => setTag(e.target.value)}
-            className="border p-2 rounded-md dark:bg-black dark:border-gray-500"
-          />
-        </div> */}
         <div className="flex justify-center" onClick={handleClick}>
           <button className="bg-primary hover:bg-[#142065] text-xl text-white rounded-md px-4 py-3 mt-4 transform-all duration-300">
             Create Group

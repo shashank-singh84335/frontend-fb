@@ -1,59 +1,68 @@
-import { Clock2, Mail, Power, Users } from 'lucide-react'
-import { useAppState } from '../../utils/Context';
+import { Clock2, Mail, Power, Users, X } from "lucide-react";
+import { useAppState } from "../../utils/Context";
 // import { useTheme } from 'next-themes';
-import { useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { Slide, toast } from 'react-toastify';
-import { BASE_AUTH_URL } from '../../data';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
+import Cookies from "js-cookie";
+import { Slide, toast } from "react-toastify";
+import { BASE_AUTH_URL } from "../../data";
+import { useNavigate } from "react-router-dom";
 const Sidebar = () => {
-    const {state,setState}=useAppState();
-    const handleLogout = async () => {
-      try {
-        await fetch(`${BASE_AUTH_URL}/signout`, {
-          method: "POST",
-          headers: {
-            Accept: "*/*",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            refresh_token: Cookies.get("refresh_token"),
-          }),
-        });
-        Cookies.remove("access_token");
-        Cookies.remove("refresh_token");
-        toast.success(`Successfully Logged Out`, {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Slide,
-        });
+  const { state, setState } = useAppState();
+  const { sidebarOpen, setSidebarOpen } = useAppState();
+  const handleLogout = async () => {
+    try {
+      await fetch(`${BASE_AUTH_URL}/signout`, {
+        method: "POST",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          refresh_token: Cookies.get("refresh_token"),
+        }),
+      });
+      Cookies.remove("access_token");
+      Cookies.remove("refresh_token");
+      toast.success(`Successfully Logged Out`, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
 
-        // Redirect if needed
-        window.location.href = "/";
-      } catch (error) {
-        console.error("Error logging out:", error);
-        // Handle error as needed
-      }
-    };
-const navigate=useNavigate()
+      // Redirect if needed
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Error logging out:", error);
+      // Handle error as needed
+    }
+  };
+  const navigate = useNavigate();
   return (
     <div className="flex justify-between h-screen flex-col p-8 w-full">
       <div className="flex flex-col gap-[2rem]">
-        <div
-          className="flex text-2xl font-semibold justify-center titleFont"
-        >
-          <h1 className="titleFont font-bold">
-            <span className="text-primary titleFont">Dash</span>Stack
-          </h1>
+        <div className="flex items-center justify-center gap-8 text-2xl font-semibold titleFont">
+          <div className="titleFont font-bold justify-center flex">
+            <span className="text-primary titleFont">Simple&nbsp;</span>Sense
+          </div>
+          <div className="sm:hidden flex" onClick={() => setSidebarOpen(false)}>
+            <X size={30} />
+          </div>
         </div>
         <div className="flex flex-col gap-3">
-          <div className="flex" onClick={() => {setState("campaign");navigate("/dashboard")}}>
+          <div
+            className="flex"
+            onClick={() => {
+              setState("campaign");
+              navigate("/dashboard");
+              setSidebarOpen(false);
+            }}
+          >
             <button
               className={`flex w-full items-center p-2 rounded-md ${
                 state === "campaign"
@@ -65,9 +74,14 @@ const navigate=useNavigate()
               <h1>Campaigns</h1>
             </button>
           </div>
-          <div className="flex" onClick={() => {setState("groups");
-        navigate("/dashboard")
-        }}>
+          <div
+            className="flex"
+            onClick={() => {
+              setState("groups");
+              navigate("/dashboard");
+              setSidebarOpen(false);
+            }}
+          >
             <button
               className={`flex w-full items-center p-2 rounded-md ${
                 state === "groups"
@@ -79,7 +93,14 @@ const navigate=useNavigate()
               <h1>Groups</h1>
             </button>
           </div>
-          <div className="flex" onClick={() => {setState("account");navigate("/dashboard")}}>
+          <div
+            className="flex"
+            onClick={() => {
+              setState("account");
+              navigate("/dashboard");
+              setSidebarOpen(false);
+            }}
+          >
             <button
               className={`flex w-full items-center p-2 rounded-md ${
                 state === "account"
@@ -101,6 +122,6 @@ const navigate=useNavigate()
       </div>
     </div>
   );
-}
+};
 
-export default Sidebar
+export default Sidebar;

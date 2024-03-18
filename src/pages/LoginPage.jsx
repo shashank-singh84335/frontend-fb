@@ -118,7 +118,7 @@ const LoginPage = () => {
       <ToastContainer />
       <div className="flex sm:flex-row gap-[4rem] flex-col p-6 h-screen">
         <div
-          className="flex sm:w-1/2 items-center justify-center text-white rounded-2xl"
+          className="flex sm:w-1/2 items-center justify-center text-white rounded-2xl h-full"
           style={{
             backgroundImage:
               "url('https://img.freepik.com/free-vector/gradient-dynamic-blue-lines-background_23-2148995756.jpg?w=996&t=st=1706124215~exp=1706124815~hmac=e5f63f3d946053d22d8a88c6714dc4db952192a2269cc06e3c43c56dda55f06d')",
@@ -137,19 +137,19 @@ const LoginPage = () => {
           </div>
           <div className="flex justify-center gap-4 bg-[#ECF0FF] p-2 rounded-md xl:w-[60%] dark:bg-darkprimary">
             <div className="flex">
-              <button className="bg-primary xl:w-[200px] text-white rounded-md p-2">
+              <button className="bg-primary xl:w-[200px] w-[150px] text-white rounded-md p-2">
                 Sign In
               </button>
             </div>
             <div className="flex"
             //  onClick={() => navigate("/signup")}
              >
-              <button className="text-[#9C9AA5] xl:w-[200px] rounded-md p-2">
+              <button className="text-[#9C9AA5] xl:w-[200px] w-[150px] rounded-md p-2">
                 Sign Up
               </button>
             </div>
           </div>
-          <div className="flex flex-col gap-6 w-[60%]">
+          <div className="flex flex-col gap-6 sm:w-[60%] w-full">
             <div className="flex flex-col gap-1">
               <label
                 htmlFor="input-group-1"

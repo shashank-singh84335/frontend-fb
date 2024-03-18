@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import Loader from "./components/Loader";
 import DashboardMain from "./pages/DashboardMain";
 import "react-toastify/dist/ReactToastify.css";
 import Profile from "./components/Dashboard/Profile";
@@ -13,7 +12,11 @@ import { BASE_AUTH_URL } from "./data";
 import Cookies from "js-cookie";
 import SpecificContentTab from "./components/Dashboard/SpeicificContentTab";
 import SpecificContent from "./pages/SpecificContent";
-
+import TnC from "./components/TnC";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import FacebookLogin from "./components/FacebookLogin";
+import Loader from "./components/Loader/Loader";
+import { ToastContainer } from "react-toastify";
 function App() {
   // useEffect(() => {
   //   if(localStorage.getItem("theme")==="system"){
@@ -25,6 +28,7 @@ function App() {
   // }, [])
   useEffect(() => {
     const refreshAccessToken = async () => {
+      console.log(Cookies.get("refresh_token"));
       try {
         const response = await fetch(`${BASE_AUTH_URL}/refresh_token`, {
           method: "POST",
@@ -32,15 +36,16 @@ function App() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            refresh_token: Cookies.get("refresh_token"),
+            "refresh_token": Cookies.get("refresh_token"),
           }),
         });
         const data = await response.json();
+        console.log(data)
         if (data.status === 10000) {
           Cookies.set("access_token", data.data.access_token);
           Cookies.set("refresh_token", data.data.refresh_token);
+          console.log("Token refreshed:", data);
         }
-        console.log("Token refreshed:", data);
       } catch (error) {
         console.error("Error refreshing token:", error);
       }
@@ -61,10 +66,15 @@ function App() {
   }
   return (
     <>
+    <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/loader-test" element={<Loader />} />
+          <Route path="/terms&conditions" element={<TnC />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/loader" element={<Loader />} />
+
           {/* <Route path="/signup" element={<SignupPage />} /> */}
           <Route
             path="/dashboard"
@@ -103,6 +113,14 @@ function App() {
             element={
               <PrivateRoute>
                 <SpecificGroup />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/add-fb-account"
+            element={
+              <PrivateRoute>
+                <FacebookLogin />
               </PrivateRoute>
             }
           />

@@ -7,7 +7,7 @@ const AppContext = createContext(undefined);
 export function AppProvider({ children }) {
   const initialState = localStorage.getItem("appState") || "campaign";
   const [state, setState] = useState(initialState);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   useEffect(() => {
     localStorage.setItem("appState", state);
   }, [state]);
