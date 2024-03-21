@@ -135,19 +135,19 @@ const LoginPage = () => {
           <div className="flex w-[60%]">
             <h1 className="text-3xl font-bold">Simple Flow</h1>
           </div>
-          <div className="flex justify-center gap-4 bg-[#ECF0FF] p-2 rounded-md xl:w-[60%] dark:bg-darkprimary">
+          <div className="flex justify-center gap-4 bg-[#ECF0FF] p-2 rounded-md dark:bg-darkprimary">
             <div className="flex">
               <button className="bg-primary xl:w-[200px] w-[150px] text-white rounded-md p-2">
                 Sign In
               </button>
             </div>
-            <div className="flex"
+            {/* <div className="flex"
             //  onClick={() => navigate("/signup")}
              >
               <button className="text-[#9C9AA5] xl:w-[200px] w-[150px] rounded-md p-2">
                 Sign Up
               </button>
-            </div>
+            </div> */}
           </div>
           <div className="flex flex-col gap-6 sm:w-[60%] w-full">
             <div className="flex flex-col gap-1">

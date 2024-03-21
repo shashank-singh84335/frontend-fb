@@ -97,10 +97,11 @@ const SpecificCampaign = () => {
                 <ArrowLeft size={25} />
               </div>
               <div className="flex">
-                <h1 className="font-bold flex gap-3 text-3xl">
+                <h1 className="font-bold flex text-3xl">
                   {localStorage.getItem("campaign_name")}
-                  <p className="text-sm">
-                    {response.length} of {metadata.total}
+                  <p className="text-gray-500 text-sm ml-2">
+                    {/* ({campaignMetaData.total}) */}
+                    Showing {response.length} of {metadata.total}{" "}
                   </p>
                 </h1>
               </div>

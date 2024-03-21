@@ -98,7 +98,9 @@ const DataTable = ({ data, onLoadMore,meta }) => {
                   {item?.end_date ? item?.end_date : "N/A"}
                 </td>
                 <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[10%] text-center">
-                  {item?.tag ? item?.tag : "N/A"}
+                  <h1 className="line-clamp-1">
+                    {item?.tag ? item?.tag : "N/A"}
+                  </h1>
                 </td>
                 <td className="py-5 px-4 border-b dark:border-b-gray-600 w-[20%] text-center">
                   <h1
@@ -117,19 +119,17 @@ const DataTable = ({ data, onLoadMore,meta }) => {
             ))}
           </tbody>
         </table>
-        {
-          (data?.length!==meta && (
-            <section
-              className="flex justify-center items-center w-full h-20"
-              ref={tableRef}
-            >
-              <LoaderIcon
-                size={32}
-                className="animate-spin text-primary dark:text-primary"
-              />
-            </section>
-          ))
-        }
+        {data?.length !== meta && (
+          <section
+            className="flex justify-center items-center w-full h-20"
+            ref={tableRef}
+          >
+            <LoaderIcon
+              size={32}
+              className="animate-spin text-primary dark:text-primary"
+            />
+          </section>
+        )}
       </div>
     </div>
   );

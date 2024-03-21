@@ -237,7 +237,7 @@ const Campaign = () => {
                   <div
                     ref={dropdown}
                     id="dropdown"
-                    className="z-10 absolute p-2 bg-white divide-y divide-gray-100 rounded-lg shadow right-[18rem] bottom-[-rem]"
+                    className="z-10 absolute p-2 bg-white divide-y divide-gray-100 rounded-lg shadow right-[18rem] bottom-[-8rem]"
                   >
                     <div className="flex flex-col gap-1">
                       {/* <div

@@ -1,16 +1,12 @@
+/* eslint-disable react/prop-types */
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
 import DashboardMain from "./pages/DashboardMain";
 import "react-toastify/dist/ReactToastify.css";
 import Profile from "./components/Dashboard/Profile";
-import FBInit from "./components/TestFB";
-import { useEffect } from "react";
 import SpecificAccount from "./components/Dashboard/TabComponent/SpecificAccount";
 import SpecificGroup from "./components/Dashboard/TabComponent/SpecificGroup";
-import { BASE_AUTH_URL } from "./data";
 import Cookies from "js-cookie";
-import SpecificContentTab from "./components/Dashboard/SpeicificContentTab";
 import SpecificContent from "./pages/SpecificContent";
 import TnC from "./components/TnC";
 import PrivacyPolicy from "./components/PrivacyPolicy";
@@ -19,43 +15,34 @@ import Loader from "./components/Loader/Loader";
 import { ToastContainer } from "react-toastify";
 function App() {
   // useEffect(() => {
-  //   if(localStorage.getItem("theme")==="system"){
-  //     localStorage.setItem("theme", "light")
-  //   }
-  //   if(localStorage.getItem("theme")===null){
-  //     localStorage.setItem("theme", "light")
-  //   }
-  // }, [])
-  useEffect(() => {
-    const refreshAccessToken = async () => {
-      console.log(Cookies.get("refresh_token"));
-      try {
-        const response = await fetch(`${BASE_AUTH_URL}/refresh_token`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            "refresh_token": Cookies.get("refresh_token"),
-          }),
-        });
-        const data = await response.json();
-        console.log(data)
-        if (data.status === 10000) {
-          Cookies.set("access_token", data.data.access_token);
-          Cookies.set("refresh_token", data.data.refresh_token);
-          console.log("Token refreshed:", data);
-        }
-      } catch (error) {
-        console.error("Error refreshing token:", error);
-      }
-    };
-    const intervalId = setInterval(() => {
-      refreshAccessToken();
-    }, 5 * 60 * 1000); 
-    return () => clearInterval(intervalId);
-  }, []);
-  // eslint-disable-next-line react/prop-types
+  //   const refreshAccessToken = async () => {
+  //     console.log(Cookies.get("refresh_token"));
+  //     try {
+  //       const response = await fetch(`${BASE_AUTH_URL}/refresh_token`, {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           "refresh_token": Cookies.get("refresh_token"),
+  //         }),
+  //       });
+  //       const data = await response.json();
+  //       console.log(data)
+  //       if (data.status === 10000) {
+  //         Cookies.set("access_token", data.data.access_token);
+  //         Cookies.set("refresh_token", data.data.refresh_token);
+  //         console.log("Token refreshed:", data);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error refreshing token:", error);
+  //     }
+  //   };
+  //   const intervalId = setInterval(() => {
+  //     refreshAccessToken();
+  //   }, 5 * 60 * 1000); 
+  //   return () => clearInterval(intervalId);
+  // }, []);
   function PrivateRoute({ children }) {
     const get_access_token = Cookies.get("access_token");
     const get_refresh_token = Cookies.get("refresh_token");
