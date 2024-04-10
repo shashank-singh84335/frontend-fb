@@ -13,6 +13,9 @@ import PrivacyPolicy from "./components/PrivacyPolicy";
 import FacebookLogin from "./components/FacebookLogin";
 import Loader from "./components/Loader/Loader";
 import { ToastContainer } from "react-toastify";
+import AnalyticsMain from "./pages/AnalyticsMain";
+import TopPostViewAll from "./components/Dashboard/TabComponent/Analytics/TopPostViewAll";
+import TopPagesViewAll from "./components/Dashboard/TabComponent/Analytics/TopPagesViewAll";
 function App() {
   // useEffect(() => {
   //   const refreshAccessToken = async () => {
@@ -53,7 +56,7 @@ function App() {
   }
   return (
     <>
-    <ToastContainer />
+      <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
@@ -68,6 +71,30 @@ function App() {
             element={
               <PrivateRoute>
                 <DashboardMain />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/dashboard/analytics"
+            element={
+              <PrivateRoute>
+                <AnalyticsMain />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/dashboard/anaytics/top-posts/view-all"
+            element={
+              <PrivateRoute>
+                <TopPostViewAll />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/dashboard/anaytics/top-pages/view-all"
+            element={
+              <PrivateRoute>
+                <TopPagesViewAll />
               </PrivateRoute>
             }
           />

@@ -63,7 +63,6 @@ const Campaign = () => {
     if (fromDate) queryParams.append("start_date_after", fromDate);
     if (toDate) queryParams.append("start_date_before", toDate);
     if (searchQuery) queryParams.append("search", searchQuery);
-
     const response = await fetch(`${BASE_URL}/campaign/?${queryParams}`, {
       method: "GET",
       headers: {

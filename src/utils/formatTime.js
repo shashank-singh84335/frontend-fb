@@ -15,3 +15,22 @@ export function convertTimestamp(timestamp) {
     return `${formattedTime} ${formattedDate}`;
   }
   
+export function getCurrentDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(today.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+export function getDateNDaysEarlier(days) {
+    const daysInMilliseconds = days * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+    const nDaysAgoTimestamp = Date.now() - daysInMilliseconds;
+    const nDaysAgoDate = new Date(nDaysAgoTimestamp);
+
+    const year = nDaysAgoDate.getFullYear();
+    const month = String(nDaysAgoDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(nDaysAgoDate.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}

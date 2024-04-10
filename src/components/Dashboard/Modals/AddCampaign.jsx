@@ -230,11 +230,10 @@ const AddCampaign = ({ close }) => {
     // const ampm = hours >= 12 ? "PM" : "AM";
     return `${hours}:${minutes}`;
   };
-  // font that facebook title uses?
   return (
-    <div className="fixed flex justify-center items-center z-30 inset-0  backdrop-blur-sm backdrop-brightness-50 w-full overflow-y-auto">
+    <div className="fixed flex justify-center items-center z-30 inset-0  backdrop-blur-sm backdrop-brightness-50 w-full">
       <div className="flex flex-col sm:flex-row bg-white sm:h-screen w-screen overflow-y-auto">
-        <div className="sm:w-[60%] flex gap-4 flex-col p-8 overflow-y-auto  dark:bg-[#3b3b3b] componentScroll">
+        <div className="sm:w-[60%] flex gap-4 flex-col p-8 dark:bg-[#3b3b3b] componentScroll">
           <div className="flex justify-between sm:h-[3rem] items-center">
             <div className="flex items-center ">
               <h1 className="text-2xl font-bold">Add Campaign</h1>
@@ -372,12 +371,12 @@ const AddCampaign = ({ close }) => {
             </button>
           </div>
         </div>
-        <div className="sm:w-[40%] hidden sm:flex flex-col p-8 items-center gap-4">
-          <div className="flex justify-center">
+        <div className="sm:w-[40%] overflow-hidden hidden sm:flex flex-col p-8 items-center gap-4">
+          {/* <div className="flex justify-center">
             <button className="p-2 rounded-md bg-primary w-[8rem] text-white">
               Preview
             </button>
-          </div>
+          </div> */}
           <div className="flex flex-col gap-6 w-[375px] h-[620px] overflow-hidden bg-gray-100 rounded-xl p-2">
             <div className="flex justify-between px-2">
               <div className="flex">
