@@ -2,7 +2,7 @@ import { Slide } from "react-toastify";
 
 export const toastsettings = {
           position: "top-right",
-          autoClose: 2500,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

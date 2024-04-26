@@ -8,7 +8,15 @@ export function AppProvider({ children }) {
   const initialState = localStorage.getItem("appState") || "campaign";
   const [state, setState] = useState(initialState);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [metricNames, setMetricNames] = useState([]);
+  const metricsFromLocalStorage = localStorage.getItem("metrics");
+const [metricNames, setMetricNames] = useState(() => {
+  if (metricsFromLocalStorage) {
+    return metricsFromLocalStorage.split(",").map((name) => name.trim());
+  }
+  return [];
+});  useEffect(() => {
+    localStorage.setItem("metrics", metricNames);
+  }, [metricNames]);
   useEffect(() => {
     localStorage.setItem("appState", state);
   }, [state]);

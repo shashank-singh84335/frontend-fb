@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ChevronDown, Filter, GanttChart, RotateCcw, Send } from "lucide-react";
+import { ChevronDown, Filter, GanttChart, RotateCcw, Search, Send } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import DataTable from "../Table/CampaignTable";
 import AddCampaign from "../Modals/AddCampaign";
@@ -178,21 +178,7 @@ const Campaign = () => {
               <div className="flex flex-col">
                 <div className="flex gap-2 relative">
                   <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none w-full">
-                    <svg
-                      className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                      />
-                    </svg>
+                    <Search size={20} className="text-gray-600" />
                   </div>
                   <input
                     type="search"

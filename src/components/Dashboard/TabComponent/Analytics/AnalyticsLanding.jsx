@@ -5,6 +5,7 @@ import {
   ChevronUp,
   LoaderIcon,
   MoveUp,
+  Info,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -65,6 +66,16 @@ const AnalyticsLanding = () => {
     setHoveredIndex(null);
   };
 
+  const [hoveredInformation, setHoveredInformation] = useState(null);
+  const [hoveredInformation2, setHoveredInformation2] = useState(null);
+  const handleMouseEnterInformation = (index1, index2) => {
+    setHoveredInformation(index1);
+    setHoveredInformation2(index2);
+  };
+  const handleMouseLeaveInformation = () => {
+    setHoveredInformation(null);
+  };
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [fileType, setFileType] = useState("");
   const [metrics, setMetrics] = useState([
@@ -81,40 +92,40 @@ const AnalyticsLanding = () => {
   const trigger1 = useRef(null);
   const dropdown1 = useRef(null);
   const [dropdownOpen1, setDropdownOpen1] = useState(false);
-  useEffect(() => {
-    const fetchDataFromAPIwithParams = async () => {
-      if (!fromDate || !toDate || metrics.length === 0) {
-        toast.info("Please select all the filters", toastsettings);
-      }
-      // summary GET API
-      var metric_query = "";
-      const queryParams = new URLSearchParams();
-      if (fileType) queryParams.append("post_type", fileType);
-      if (fromDate) queryParams.append("metric_start_date", fromDate);
-      if (toDate) queryParams.append("metric_end_date", toDate);
-      if (metrics) {
-        const modified_metrices = removeWhitespace(metrics);
-        metric_query = modified_metrices.join(",");
-        queryParams.append("metrics", metric_query);
-      }
-      // console.log(queryParams);
-      // console.log(queryParams.toString());
-      const response = await fetch(
-        `${BASE_URL}/analytic/page/summary/?${queryParams}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${Cookies.get("access_token")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      // console.log(data);
-      setResponseSummary(data.data);
-    };
-    fetchDataFromAPIwithParams();
-  }, []);
+  // useEffect(() => {
+  //   const fetchDataFromAPIwithParams = async () => {
+  //     if (!fromDate || !toDate || metrics.length === 0) {
+  //       toast.info("Please select all the filters", toastsettings);
+  //     }
+  //     // summary GET API
+  //     var metric_query = "";
+  //     const queryParams = new URLSearchParams();
+  //     if (fileType) queryParams.append("post_type", fileType);
+  //     if (fromDate) queryParams.append("metric_start_date", fromDate);
+  //     if (toDate) queryParams.append("metric_end_date", toDate);
+  //     if (metrics) {
+  //       const modified_metrices = removeWhitespace(metrics);
+  //       metric_query = modified_metrices.join(",");
+  //       queryParams.append("metrics", metric_query);
+  //     }
+  //     // console.log(queryParams);
+  //     // console.log(queryParams.toString());
+  //     const response = await fetch(
+  //       `${BASE_URL}/analytic/page/summary/?${queryParams}`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${Cookies.get("access_token")}`,
+  //         },
+  //       }
+  //     );
+  //     const data = await response.json();
+  //     // console.log(data);
+  //     setResponseSummary(data.data);
+  //   };
+  //   fetchDataFromAPIwithParams();
+  // }, []);
   useEffect(() => {
     const clickHandler = ({ target }) => {
       if (!dropdown1.current) return;
@@ -150,39 +161,42 @@ const AnalyticsLanding = () => {
   // useEffect(() => {
   //   console.log(metrics, fileType, fromDate, toDate);
   // }, [metrics, fileType, fromDate, toDate]);
-  const fetchDataFromAPIwithParams = async () => {
-    if (!fromDate || !toDate || metrics.length === 0) {
-      toast.info("Please select all the filters", toastsettings);
-    }
-    setSummaryFilterButtonPressed(true);
-    // summary GET API
-    var metric_query = "";
-    const queryParams = new URLSearchParams();
-    if (fileType) queryParams.append("post_type", fileType);
-    if (fromDate) queryParams.append("metric_start_date", fromDate);
-    if (toDate) queryParams.append("metric_end_date", toDate);
-    if (metrics) {
-      const modified_metrices = removeWhitespace(metrics);
-      metric_query = modified_metrices.join(",");
-      queryParams.append("metrics", metric_query);
-    }
-    // console.log(queryParams);
-    // console.log(queryParams.toString());
-    const response = await fetch(
-      `${BASE_URL}/analytic/page/summary/?${queryParams}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("access_token")}`,
-        },
-      }
-    );
-    const data = await response.json();
-    // console.log(data);
-    setResponseSummary(data.data);
-    setSummaryFilterButtonPressed(false);
-  };
+  // const fetchDataFromAPIwithParams = async () => {
+  //   if (!fromDate || !toDate || metrics.length === 0) {
+  //     toast.info("Please select all the filters", toastsettings);
+  //     return;
+  //   }
+  //   setSummaryFilterButtonPressed(true);
+  //   // summary GET API
+  //   var metric_query = "";
+  //   const queryParams = new URLSearchParams();
+  //   if (fileType) queryParams.append("post_type", fileType);
+  //   if (fromDate) queryParams.append("metric_start_date", fromDate);
+  //   if (toDate) queryParams.append("metric_end_date", toDate);
+  //   if (metrics) {
+  //     const modified_metrices = removeWhitespace(metrics);
+  //     metric_query = modified_metrices.join(",");
+  //     queryParams.append("metrics", metric_query);
+  //   }
+  //   // console.log(queryParams);
+  //   // console.log(queryParams.toString());
+  //   const response = await fetch(
+  //     `${BASE_URL}/analytic/page/summary/?${queryParams}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${Cookies.get("access_token")}`,
+  //       },
+  //     }
+  //   );
+  //   const data = await response.json();
+  //   // console.log(data);
+  //   setResponseSummary(data.data);
+  //   setSummaryFilterButtonPressed(false);
+  //   toast.success("Filters Applied successfully", toastsettings);
+  // };
+  const fetchDataFromAPIwithParams = async () => {}
   const navbarItems = [
     {
       linkName: "Filter by",
@@ -219,10 +233,10 @@ const AnalyticsLanding = () => {
   const [fileType2, setFileType2] = useState("");
   const [topMetricBy, setTopMetricBy] = useState("total_comments");
   const [metrics2, setMetrics2] = useState([
-    " total_reactions",
-    " total_shares",
-    " post_impressions",
-    " post_video_views_3s",
+    "total_reactions",
+    "total_shares",
+    "post_impressions",
+    "post_video_views_3s",
   ]);
   const handleMouseEnter2 = (index) => {
     setHoveredIndex2(index);
@@ -237,7 +251,19 @@ const AnalyticsLanding = () => {
       setMetrics2([]);
     }
     if (linkHeading === "Other Metrics") {
-      setMetrics2([...metrics2, linkName]);
+      if (metrics2.includes(linkName)) {
+        // setlocalStorageData({
+        //   ...localStorageData,
+        //   TopPostOtherMetrics: metrics3.filter((item) => item !== linkName),
+        // });
+        setMetrics2(metrics2.filter((item) => item !== linkName));
+      } else {
+        // setlocalStorageData({
+        //   ...localStorageData,
+        //   TopPostOtherMetrics: [...metrics3, linkName],
+        // });
+        setMetrics2([...metrics2, linkName]);
+      }
     }
     if (linkHeading === "Content Type") {
       setFileType2(linkName);
@@ -305,6 +331,7 @@ const AnalyticsLanding = () => {
     console.log(topMetricBy, metrics2);
     if (topMetricBy === "" || metrics2.length === 0 || !fromDate2 || !toDate2) {
       toast.info("Please select all the filters", toastsettings);
+      return;
     }
     setTopPostsFilterButtonPressed(true);
     var metric_query = "";
@@ -338,6 +365,7 @@ const AnalyticsLanding = () => {
     // console.log(data);
     setTopPostResponse(data.data);
     setTopPostsFilterButtonPressed(false);
+    toast.success("Filters Applied successfully", toastsettings);
   };
   // fetch data on first load
   useEffect(() => {
@@ -397,10 +425,10 @@ const AnalyticsLanding = () => {
   const trigger3 = useRef(null);
   const dropdown3 = useRef(null);
   const [metrics3, setMetrics3] = useState([
-    " total_reactions",
-    " total_shares",
-    " post_impressions",
-    " post_video_views_3s",
+    "total_reactions",
+    "total_shares",
+    "post_impressions",
+    "post_video_views_3s",
   ]);
   const handleMouseEnter3 = (index) => {
     setHoveredIndex3(index);
@@ -433,7 +461,6 @@ const AnalyticsLanding = () => {
       linkName: "Other Metrics",
       sublinks: metrics_data.filter((item) => item.links_id !== topMetricBy3),
     },
-    
   ];
   useEffect(() => {
     const clickHandler = ({ target }) => {
@@ -459,6 +486,7 @@ const AnalyticsLanding = () => {
       !toDate3
     ) {
       toast.info("Please select all the filters", toastsettings);
+      return;
     }
     setTopPagesFilterButtonPressed(true);
     var metric_query = "";
@@ -492,6 +520,7 @@ const AnalyticsLanding = () => {
     console.log(data);
     setTopPageResponse(data.data);
     setTopPagesFilterButtonPressed(false);
+    toast.success("Filters Applied successfully", toastsettings);
   };
   useEffect(() => {
     const fetchDataFromAPIwithParams3 = async () => {
@@ -506,7 +535,7 @@ const AnalyticsLanding = () => {
       }
       var metric_query = "";
       const queryParams = new URLSearchParams();
-      if (fromDate3) queryParams.append("metric_start_date", fromDate3);
+      if (fromDate3) queryParams.append("metric_start_date", fromDate);
       if (topMetricBy3) {
         const val = topMetricBy3.trim();
         queryParams.append("top_metric", val);
@@ -528,7 +557,11 @@ const AnalyticsLanding = () => {
           },
         }
       );
+      console.log("Response for top pages", response);
       const data = await response.json();
+      if(data.status==1010001){
+        toast.error("Error Fetching Data", toastsettings);
+      }
       console.log(data);
       setTopPageResponse(data.data);
     };
@@ -815,9 +848,16 @@ const AnalyticsLanding = () => {
                 </div>
                 <div
                   className="flex"
-                  onClick={() =>
-                    navigate("/dashboard/anaytics/top-posts/view-all")
-                  }
+                  onClick={() => {
+                    {
+                      localStorage.setItem("TopPostTopMetric", topMetricBy);
+                      localStorage.setItem("TopPostMetrics", metrics2);
+                      localStorage.setItem("FileType", fileType2);
+                      localStorage.setItem("FromDate", fromDate2);
+                      localStorage.setItem("ToDate", toDate2);
+                      navigate("/dashboard/anaytics/top-posts/view-all");
+                    }
+                  }}
                 >
                   <button className="flex gap-2 items-center p-2 justify-center bg-white rounded-md text-gray-500 focus:outline-none hover:bg-gray-200 border-2 w-[6rem] hover:text-black">
                     View All
@@ -846,20 +886,41 @@ const AnalyticsLanding = () => {
                         src={`https://www.facebook.com/plugins/post.php?href=${item.post_link}&height=400&show_text=false&appId=332688753090534&height=0`}
                         width="240"
                         height="300"
-                        
                       ></iframe>
                     </div>
                     <div className="flex flex-col text-sm">
                       <h1 className="font-bold">{item.account_name}</h1>
                       <h1 className="">{item.page_name}</h1>
                     </div>
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1 w-full">
                       {item.mertics?.map((metric_item, index2) => (
-                        <div className="flex justify-between" key={index2}>
-                          <h1 className="text-gray-600">
+                        <div
+                          className="flex justify-between"
+                          key={index2}
+                          onMouseLeave={handleMouseLeaveInformation}
+                        >
+                          <h1 className="text-gray-600 flex justify-between items-center gap-2 w-[80%]">
                             {getlinkNameBylinks_id(metric_item.metric)}
+
+                            <h1 className="cursor-pointer">
+                              <Info
+                                onMouseEnter={() =>
+                                  handleMouseEnterInformation(index, index2)
+                                }
+                                className="cursor-pointer text-gray-500"
+                                size={15}
+                              />
+                            </h1>
+                            {hoveredInformation === index &&
+                              hoveredInformation2 == index2 && (
+                                <div className="absolute bg-white dark:bg-black p-2 rounded-md shadow-md mt-14">
+                                  <h1>{metric_item.description}</h1>
+                                </div>
+                              )}
                           </h1>
-                          <h1 className="font-bold">{metric_item.value}</h1>
+                          <h1 className="font-bold w-[10%]">
+                            {metric_item.value}
+                          </h1>
                         </div>
                       ))}
                     </div>
@@ -986,9 +1047,14 @@ const AnalyticsLanding = () => {
                 </div>
                 <div
                   className="flex"
-                  onClick={() =>
-                    navigate("/dashboard/anaytics/top-pages/view-all")
-                  }
+                  onClick={() => {
+                    localStorage.setItem("TopPagesTopMetric", topMetricBy3);
+                    localStorage.setItem("TopPagesMetrics", metrics3);
+                    // localStorage.setItem("FileType", fileType2);
+                    localStorage.setItem("FromDatePages", fromDate3);
+                    localStorage.setItem("ToDatePages", toDate3);
+                    navigate("/dashboard/anaytics/top-pages/view-all");
+                  }}
                 >
                   <button className="flex gap-2 items-center p-2 justify-center bg-white rounded-md text-gray-500 focus:outline-none hover:bg-[#f5f5f5] border-2 w-[6rem] hover:text-black">
                     View All

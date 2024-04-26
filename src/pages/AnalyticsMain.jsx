@@ -22,7 +22,10 @@ const AnalyticsMain = () => {
       const data = await response.json();
       // console.log(data.data.map((item) => item.metric_name));
       if (response.status === 200) {
-        setMetricNames(data.data.map((item) => item.metric_name));
+        // setMetricNames(data.data.map((item) => item.metric_name.trim()));
+        // setMetricNames(data.data.map((item) => item.metric_name));
+        // trim the metric names
+        setMetricNames(data.data.map((item) => item.metric_name.trim()));
       }      
     }
     fetchMetricsNames();

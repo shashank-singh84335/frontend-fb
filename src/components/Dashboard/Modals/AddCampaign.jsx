@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import {
   Battery,
+  Film,
   Forward,
   Globe,
   Image,
@@ -15,6 +16,7 @@ import {
   Wifi,
   X,
 } from "lucide-react";
+import "./Modal.css"
 import { MultiSelect } from "primereact/multiselect";
 import React, { useEffect, useState } from "react";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
@@ -61,27 +63,59 @@ const AddCampaign = ({ close }) => {
       </div>
     );
   };
-  const handleFileChangeVideo = (e) => {
-    setContentType("videos");
-    const file = e.target.files[0];
-    const type = file.type.split("/")[0];
-    console.log(type);
-    if (file && type == "video") {
-      setAttachedFile(file);
-    } else {
-      toast.error("Invalid file type", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Slide,
-      });
-    }
-  };
+const handleFileChangeReels = (e) => {
+  setContentType("reels");
+  const file = e.target.files[0];
+  console.log(file)
+  const type = file.type.split("/")[0];
+  const file_extension = file.name.split(".").pop();
+  console.log(file_extension)
+  if(file_extension !== "mp4"){
+    toast.error("Only mp4 supported", toastsettings);
+    return;
+  }
+  if (file && type === "video") {
+    const video = document.createElement("video");
+    video.preload = "metadata";
+    video.onloadedmetadata = () => {
+      const minWidth = 540;
+      const minHeight = 960;
+      const maxWidth = 1080;
+      const maxHeight = 1920;
+      const aspectRatio = 9 / 16;
+      const durationInSeconds = Math.floor(video.duration);
+      if(durationInSeconds<3 || durationInSeconds>90){
+        toast.error("Video should be between 3 to 90 seconds.", toastsettings);
+        return;
+      }
+      console.log(durationInSeconds);
+      if (
+        video.videoWidth >= minWidth &&
+        video.videoHeight >= minHeight &&
+        video.videoWidth <= maxWidth &&
+        video.videoHeight <= maxHeight &&
+        Math.abs(video.videoWidth / video.videoHeight - aspectRatio) < 0.01
+      ) {
+        setAttachedFile(file);
+      } else {
+        toast.error("Video should be 540x960 to 1080x1920 with 9:16 ratio.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Slide,
+        });
+      }
+    };
+    video.src = URL.createObjectURL(file);
+  } else {
+    toast.error("Invalid file type", toastsettings);
+  }
+};
   const handleFileChangeImage = (e) => {
     setContentType("photos");
     const file = e.target.files[0];
@@ -103,6 +137,17 @@ const AddCampaign = ({ close }) => {
       });
     }
   };
+  const handleFileChangeVideo = (e) => {
+    setContentType("videos");
+    const file = e.target.files[0];
+    const type = file.type.split("/")[0];
+    console.log(type);
+    if (file && type == "video") {
+      setAttachedFile(file);
+    } else {
+      toast.error("Invalid file type", toastsettings);
+    }
+  }
   useEffect(() => {
     const handleOutsideClick = (e) => {
       if (showEmojiPicker && !e.target.closest(".emoji_picker")) {
@@ -254,7 +299,7 @@ const AddCampaign = ({ close }) => {
               type="text"
               placeholder="Enter Campaign Name"
               value={campaignName}
-              onChange={(e) => setCampaignName(e.target.value)}
+              onChange={(e) => {e.preventDefault();setCampaignName(e.target.value)}}
               className="border p-2 rounded-md dark:bg-black dark:border-gray-500"
             />
           </div>
@@ -296,43 +341,61 @@ const AddCampaign = ({ close }) => {
                 onChange={(e) => setContent(e.target.value)}
               />
             </div>
-            <div className="flex items-center dark:border-gray-500   border bg-[#f5f5f5] gap-2 rounded-b-xl dark:bg-[#3b3b3b] p-4">
-              <div className="flex hover:bg-primary dark:hover:bg-primary hover:text-white transform-all duration-300 cursor-pointer items-center gap-2  dark:bg-black  dark:border-gray-500 rounded-md p-3 text-gray-500 dark:text-gray-100 ">
-                <label htmlFor="fileInput" className="cursor-pointer">
-                  <Image size={20} className="" />
-                  <input
-                    id="fileInput"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleFileChangeImage}
-                  />
-                </label>
-              </div>
-              <div className="flex hover:bg-primary dark:hover:bg-primary hover:text-white transform-all duration-300 cursor-pointer items-center gap-2 bg-white dark:bg-black  dark:border-gray-500 rounded-md p-3 text-gray-500 dark:text-gray-100 ">
-                <label htmlFor="fileInputVideo" className="cursor-pointer">
-                  <Video size={20} className="" />
-                  <input
-                    id="fileInputVideo"
-                    type="file"
-                    accept="video/*"
-                    className="hidden"
-                    onChange={handleFileChangeVideo}
-                  />
-                </label>
-              </div>
-              <div
-                className="flex hover:bg-primary dark:hover:bg-primary hover:text-white transform-all duration-300 cursor-pointer items-center gap-2 bg-white dark:bg-black dark:border-gray-500 rounded-md p-3 text-gray-500 dark:text-gray-100 emoji_picker"
-                onClick={() => setShowEmojiPicker(true)}
-              >
-                <Smile size={20} />
-              </div>
-              {showEmojiPicker && (
-                <div className="absolute ml-[15rem] emoji_picker flex items-center justify-center">
-                  <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+            <div className="flex items-center dark:border-gray-500   border bg-[#f5f5f5] gap-2 rounded-b-xl dark:bg-[#3b3b3b] p-4 justify-between">
+              <div className="flex gap-2 items-center">
+                <div className="flex hover:bg-primary dark:hover:bg-primary hover:text-white transform-all duration-300 cursor-pointer items-center gap-2 bg-white dark:bg-black  dark:border-gray-500 rounded-md p-3 text-gray-500 dark:text-gray-100 ">
+                  <label htmlFor="fileInput" className="cursor-pointer">
+                    <Image size={20} className="" />
+                    <input
+                      id="fileInput"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleFileChangeImage}
+                    />
+                  </label>
                 </div>
-              )}
-              <div className="flex justify-end w-full">
+                <div className="flex hover:bg-primary dark:hover:bg-primary hover:text-white transform-all duration-300 cursor-pointer items-center gap-2 bg-white dark:bg-black  dark:border-gray-500 rounded-md p-3 text-gray-500 dark:text-gray-100 ">
+                  <label htmlFor="fileInputVideo" className="cursor-pointer">
+                    <Video size={20} className="" />
+                    <input
+                      id="fileInputVideo"
+                      type="file"
+                      accept="video/*"
+                      className="hidden"
+                      onChange={handleFileChangeVideo}
+                    />
+                  </label>
+                </div>
+                <div className="flex hover:bg-primary dark:hover:bg-primary hover:text-white transform-all duration-300 cursor-pointer items-center gap-2 bg-white dark:bg-black  dark:border-gray-500 rounded-md p-3 text-gray-500 dark:text-gray-100 ">
+                  <label htmlFor="fileInputReels" className="cursor-pointer">
+                    <Film size={20} className="" />
+                    <input
+                      id="fileInputReels"
+                      type="file"
+                      accept="video/*"
+                      className="hidden"
+                      onChange={handleFileChangeReels}
+                    />
+                  </label>
+                </div>
+                <div
+                  className="flex hover:bg-primary dark:hover:bg-primary hover:text-white transform-all duration-300 cursor-pointer items-center gap-2 bg-white dark:bg-black dark:border-gray-500 rounded-md p-3 text-gray-500 dark:text-gray-100 emoji_picker"
+                  onClick={() => setShowEmojiPicker(true)}
+                >
+                  <Smile size={20} />
+                </div>
+                {showEmojiPicker && (
+                  <div className="absolute ml-[15rem] emoji_picker flex items-center justify-center">
+                    <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+                  </div>
+                )}
+                <div className="flex text-gray-600 ml-4">
+                  <h1 className="flex">Content Type : {contentType}</h1>
+                </div>
+              </div>
+
+              <div className="flex justify-end ">
                 {attachedFile && (
                   <div className="flex gap-4 items-center">
                     <span className="text-sm">{attachedFile.name}</span>
@@ -478,6 +541,18 @@ const AddCampaign = ({ close }) => {
                     }
                     width="auto"
                     className="object-cover"
+                    controls
+                  />
+                )}
+                {contentType === "reels" && (
+                  <video
+                    src={
+                      attachedFile
+                        ? URL.createObjectURL(attachedFile)
+                        : "https://via.placeholder.com/360"
+                    }
+                    width="auto"
+                    className="reels"
                     controls
                   />
                 )}

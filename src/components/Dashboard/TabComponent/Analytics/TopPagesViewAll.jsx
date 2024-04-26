@@ -10,12 +10,35 @@ import { transformMetrics } from "../../../../utils/transformArray";
 import { toast } from "react-toastify";
 import { toastsettings } from "../../../../utils/toastsettings";
 import { BASE_URL } from "../../../../data";
-import {Check, ChevronDown, LoaderIcon} from "lucide-react";
+import { Check, ChevronDown, LoaderIcon, Search } from "lucide-react";
 import Cookies from "js-cookie";
 import AnalyticsLandingTopPages from "./AnalyticsLandingTopPages";
 
 const TopPagesViewAll = () => {
-  const [topPagesFilterButtonPressed, setTopPagesFilterButtonPressed] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchTriggered, setSearchTriggered] = useState(false);
+  const dataMetrics = localStorage
+    .getItem("TopPagesMetrics")
+    .split(",")
+    .map((name) => name.trim());
+  console.log(dataMetrics);
+  const [localStorageData, setlocalStorageData] = useState({
+    TopPagesTopMetric:
+      localStorage.getItem("TopPagesTopMetric") || "total_comments",
+    TopPagesOtherMetrics: dataMetrics || [
+      "total_reactions",
+      "total_shares",
+      "post_impressions",
+      "post_video_views_3s",
+    ],
+    TopPagesContentType: localStorage.getItem("FileType") || "",
+    TopPagesFromDate:
+      localStorage.getItem("FromDatePages") || getDateNDaysEarlier(7),
+    TopPagesToDate:
+      localStorage.getItem("ToDatePages") || getCurrentDate(new Date()),
+  });
+  const [topPagesFilterButtonPressed, setTopPagesFilterButtonPressed] =
+    useState(false);
   const default_from_date = getCurrentDate(new Date());
   const { metricNames, setMetricNames } = useAppState();
   const arr = transformMetrics(metricNames);
@@ -23,22 +46,34 @@ const TopPagesViewAll = () => {
   for (let i = 0; i < metricNames.length; i++) {
     metrics_data.push({ id: i, linkName: arr[i], links_id: metricNames[i] });
   }
+  console.log(metrics_data);
   const [topPageResponse, setTopPageResponse] = useState();
   const [MetaData, setMetaData] = useState();
   const [hoveredIndex3, setHoveredIndex3] = useState(null);
-  const [fileType3, setFileType3] = useState("");
-  const [topMetricBy3, setTopMetricBy3] = useState("total_comments");
+  const [fileType3, setFileType3] = useState(
+    localStorageData.TopPagesContentType || ""
+  );
+  const [topMetricBy3, setTopMetricBy3] = useState(
+    localStorageData.TopPagesTopMetric || "total_comments"
+  );
   const [dropdownOpen3, setDropdownOpen3] = useState(false);
-  const [fromDate3, setFromDate3] = useState(getDateNDaysEarlier(7));
-  const [toDate3, setToDate3] = useState(default_from_date);
+  const [fromDate3, setFromDate3] = useState(
+    localStorageData.TopPagesFromDate || getDateNDaysEarlier(7)
+  );
+  const [toDate3, setToDate3] = useState(
+    localStorageData.TopPagesToDate || default_from_date
+  );
   const trigger3 = useRef(null);
   const dropdown3 = useRef(null);
-  const [metrics3, setMetrics3] = useState([
-    " total_reactions",
-    " total_shares",
-    " post_impressions",
-    " post_video_views_3s",
-  ]);
+  const [metrics3, setMetrics3] = useState(
+    dataMetrics || [
+      "total_reactions",
+      "total_shares",
+      "post_impressions",
+      "post_video_views_3s",
+    ]
+  );
+  console.log(metrics3);
   const handleMouseEnter3 = (index) => {
     setHoveredIndex3(index);
   };
@@ -48,17 +83,40 @@ const TopPagesViewAll = () => {
   const handleFilterSummary3 = (linkName, linkHeading) => {
     if (linkHeading === "Top Metric") {
       setTopMetricBy3(linkName);
+      setlocalStorageData({
+        ...localStorageData,
+        TopPagesTopMetric: linkName,
+      });
+      localStorage.setItem("TopPagesTopMetric", linkName);
       setMetrics3([]);
     }
     if (linkHeading === "Other Metrics") {
       if (metrics3.includes(linkName)) {
+        setlocalStorageData({
+          ...localStorageData,
+          TopPagesOtherMetrics: metrics3.filter((item) => item !== linkName),
+        });
+        localStorage.setItem(
+          "TopPagesMetrics",
+          metrics3.filter((item) => item !== linkName)
+        );
         setMetrics3(metrics3.filter((item) => item !== linkName));
       } else {
+        setlocalStorageData({
+          ...localStorageData,
+          TopPagesOtherMetrics: [...metrics3, linkName],
+        });
+        localStorage.setItem("TopPagesMetrics", [...metrics3, linkName]);
         setMetrics3([...metrics3, linkName]);
       }
     }
     if (linkHeading === "Content Type") {
+      setlocalStorageData({
+        ...localStorageData,
+        TopPagesContentType: linkName,
+      });
       setFileType3(linkName);
+      localStorage.setItem("FileType", linkName);
     }
   };
   const navbarItems3 = [
@@ -93,13 +151,12 @@ const TopPagesViewAll = () => {
       queryParams.append("top_metric", val);
     }
     if (toDate3) queryParams.append("metric_end_date", toDate3);
-    // if (fileType3) queryParams.append("post_type", fileType3);
-    // queryParams.append("limit", 6);
     if (metrics3) {
       const modified_metrices = removeWhitespace(metrics3);
       metric_query = modified_metrices.join(",");
       queryParams.append("metrics", metric_query);
     }
+    if (searchQuery) queryParams.append("search", searchQuery);
     console.log(queryParams); // show length of query params
     console.log(queryParams.toString()); // show complete query in string
     const response = await fetch(
@@ -115,22 +172,17 @@ const TopPagesViewAll = () => {
     const data = await response.json();
     // console.log(data);
     setTopPageResponse(data.data);
-    setMetaData(data)
+    setMetaData(data);
     // ;console.log(data);
     setTopPagesFilterButtonPressed(false);
   };
   useEffect(() => {
     const fetchDataFromAPIwithParams3 = async () => {
-      // top Pages API
-      if (
-        topMetricBy3 === "" ||
-        metrics3.length === 0 ||
-        !fromDate3 ||
-        !toDate3
-      ) {
-        toast.info("Please select all the filters", toastsettings);
-        return;
-      }
+      const fromDate3 = localStorageData.TopPagesFromDate;
+      const toDate3 = localStorageData.TopPagesToDate;
+      const topMetricBy3 = localStorageData.TopPagesTopMetric;
+      const metrics3 = localStorageData.TopPagesOtherMetrics;
+      const fileType3 = localStorageData.TopPagesContentType;
       var metric_query = "";
       const queryParams = new URLSearchParams();
       if (fromDate3) queryParams.append("metric_start_date", fromDate3);
@@ -168,7 +220,7 @@ const TopPagesViewAll = () => {
   }, []);
   const [dataPresent, setdataPresent] = useState();
   function fetchNextPage() {
-    console.log("Here in fetchNextPage")
+    console.log("Here in fetchNextPage");
     const url = MetaData.next;
     if (topPageResponse !== null && url == null) {
       setdataPresent(false);
@@ -193,19 +245,46 @@ const TopPagesViewAll = () => {
       // setdataPresent(false);
     }
   }
+  useEffect(() => {
+    if (!searchQuery) {
+      fetchDataFromAPIwithParams3();
+    }
+  }, [searchQuery]);
   return (
     <CommonAnalyticsStructure>
       <div className="flex flex-col gap-8 py-6 mt-6 w-full">
+        <div className="flex">
+          <h1 className="font-bold flex items-center text-3xl">
+            {" "}
+            Top Pages
+            <p className="text-gray-500 text-sm ml-2">
+              {/* ({campaignMetaData.total}) */}
+              Showing {topPageResponse?.length} of {MetaData?.total}{" "}
+            </p>
+          </h1>
+        </div>
         <div className="flex justify-between items-center">
-          <div className="flex">
-            <h1 className="font-bold flex items-center text-3xl">
-              {" "}
-              Top Pages
-              <p className="text-gray-500 text-sm ml-2">
-                {/* ({campaignMetaData.total}) */}
-                Showing {topPageResponse?.length} of {MetaData?.total}{" "}
-              </p>
-            </h1>
+          <div className="flex gap-2 relative">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none w-full">
+              <Search size={20} className="text-gray-600" />
+            </div>
+            <input
+              type="search"
+              id="search"
+              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery}
+              className="block w-[22rem] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-xl bg-gray-50 focus:outline-none"
+              placeholder="Search Campaigns via Name"
+              required
+            />
+            <button
+              onClick={() => {
+                fetchDataFromAPIwithParams3();
+              }}
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+            >
+              Search
+            </button>
           </div>
           <div className="flex px-10 gap-2">
             {navbarItems3.map((item, index) => (
@@ -304,7 +383,9 @@ const TopPagesViewAll = () => {
               onClick={fetchDataFromAPIwithParams3}
             >
               <button className="flex gap-2 items-center">
-                {topPagesFilterButtonPressed && <LoaderIcon size={20} className="animate-spin"/>}
+                {topPagesFilterButtonPressed && (
+                  <LoaderIcon size={20} className="animate-spin" />
+                )}
                 Apply Filters
               </button>
             </div>

@@ -6,6 +6,7 @@ import { LoaderIcon } from 'lucide-react';
 // table for view all top pages
 const AnalyticsLandingTopPages = ({ data, onLoadMore,meta }) => {
   if(!data) return;
+  if (data.length === 0) return;
   console.log(meta,data.length)
   // meta = total 
   const [arr, setArr] = useState([]);
@@ -18,7 +19,12 @@ const AnalyticsLandingTopPages = ({ data, onLoadMore,meta }) => {
       const first = data[0].mertics;
       console.log(first);
       for (let i = 0; i < first.length; i++) {
-        a.push(first[i].metric); // change this to label afterwards
+        if(first[i].label!==""){
+          a.push(first[i].label);
+        }
+        else{
+          a.push(first[i].metric);
+        }
       }
       setArr(a);
     };
