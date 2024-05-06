@@ -259,7 +259,7 @@ const TopPagesViewAll = () => {
             Top Pages
             <p className="text-gray-500 text-sm ml-2">
               {/* ({campaignMetaData.total}) */}
-              Showing {topPageResponse?.length} of {MetaData?.total}{" "}
+              {/* Showing {topPageResponse?.length} of {MetaData?.total}{" "} */}
             </p>
           </h1>
         </div>

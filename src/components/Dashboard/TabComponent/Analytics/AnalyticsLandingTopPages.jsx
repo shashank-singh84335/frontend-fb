@@ -76,8 +76,10 @@ const AnalyticsLandingTopPages = ({ data, onLoadMore,meta }) => {
                 <td className="px-4 py-4 w-[12.5%] border-b dark:border-b-gray-600">
                   <div className="flex items-center">
                     <div className="flex flex-col">
-                      <p className="font-semibold">{item?.account_name}</p>
-                      <p className="text-xs text-gray-400">{item?.page_name}</p>
+                      <p className="font-semibold">{item?.page_name}</p>
+                      <p className="text-xs text-gray-400">
+                        {item?.account_name}
+                      </p>
                     </div>
                   </div>
                 </td>

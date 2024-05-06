@@ -6,6 +6,7 @@ import {
   LoaderIcon,
   MoveUp,
   Info,
+  InfoIcon,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -75,6 +76,13 @@ const AnalyticsLanding = () => {
   const handleMouseLeaveInformation = () => {
     setHoveredInformation(null);
   };
+  const [hoveredSummary, setHoveredSummary] = useState(null);
+  const handleHoveredSummary = (index) => {
+    setHoveredSummary(index);
+  };
+  const handleMouseLeaveSummary = () => {
+    setHoveredSummary(null);
+  };
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [fileType, setFileType] = useState("");
@@ -92,40 +100,40 @@ const AnalyticsLanding = () => {
   const trigger1 = useRef(null);
   const dropdown1 = useRef(null);
   const [dropdownOpen1, setDropdownOpen1] = useState(false);
-  // useEffect(() => {
-  //   const fetchDataFromAPIwithParams = async () => {
-  //     if (!fromDate || !toDate || metrics.length === 0) {
-  //       toast.info("Please select all the filters", toastsettings);
-  //     }
-  //     // summary GET API
-  //     var metric_query = "";
-  //     const queryParams = new URLSearchParams();
-  //     if (fileType) queryParams.append("post_type", fileType);
-  //     if (fromDate) queryParams.append("metric_start_date", fromDate);
-  //     if (toDate) queryParams.append("metric_end_date", toDate);
-  //     if (metrics) {
-  //       const modified_metrices = removeWhitespace(metrics);
-  //       metric_query = modified_metrices.join(",");
-  //       queryParams.append("metrics", metric_query);
-  //     }
-  //     // console.log(queryParams);
-  //     // console.log(queryParams.toString());
-  //     const response = await fetch(
-  //       `${BASE_URL}/analytic/page/summary/?${queryParams}`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${Cookies.get("access_token")}`,
-  //         },
-  //       }
-  //     );
-  //     const data = await response.json();
-  //     // console.log(data);
-  //     setResponseSummary(data.data);
-  //   };
-  //   fetchDataFromAPIwithParams();
-  // }, []);
+  useEffect(() => {
+    const fetchDataFromAPIwithParams = async () => {
+      if (!fromDate || !toDate || metrics.length === 0) {
+        toast.info("Please select all the filters", toastsettings);
+      }
+      // summary GET API
+      var metric_query = "";
+      const queryParams = new URLSearchParams();
+      if (fileType) queryParams.append("post_type", fileType);
+      if (fromDate) queryParams.append("metric_start_date", fromDate);
+      if (toDate) queryParams.append("metric_end_date", toDate);
+      if (metrics) {
+        const modified_metrices = removeWhitespace(metrics);
+        metric_query = modified_metrices.join(",");
+        queryParams.append("metrics", metric_query);
+      }
+      // console.log(queryParams);
+      // console.log(queryParams.toString());
+      const response = await fetch(
+        `${BASE_URL}/analytic/page/summary/?${queryParams}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("access_token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      // console.log(data);
+      setResponseSummary(data.data);
+    };
+    fetchDataFromAPIwithParams();
+  }, []);
   useEffect(() => {
     const clickHandler = ({ target }) => {
       if (!dropdown1.current) return;
@@ -161,42 +169,42 @@ const AnalyticsLanding = () => {
   // useEffect(() => {
   //   console.log(metrics, fileType, fromDate, toDate);
   // }, [metrics, fileType, fromDate, toDate]);
-  // const fetchDataFromAPIwithParams = async () => {
-  //   if (!fromDate || !toDate || metrics.length === 0) {
-  //     toast.info("Please select all the filters", toastsettings);
-  //     return;
-  //   }
-  //   setSummaryFilterButtonPressed(true);
-  //   // summary GET API
-  //   var metric_query = "";
-  //   const queryParams = new URLSearchParams();
-  //   if (fileType) queryParams.append("post_type", fileType);
-  //   if (fromDate) queryParams.append("metric_start_date", fromDate);
-  //   if (toDate) queryParams.append("metric_end_date", toDate);
-  //   if (metrics) {
-  //     const modified_metrices = removeWhitespace(metrics);
-  //     metric_query = modified_metrices.join(",");
-  //     queryParams.append("metrics", metric_query);
-  //   }
-  //   // console.log(queryParams);
-  //   // console.log(queryParams.toString());
-  //   const response = await fetch(
-  //     `${BASE_URL}/analytic/page/summary/?${queryParams}`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${Cookies.get("access_token")}`,
-  //       },
-  //     }
-  //   );
-  //   const data = await response.json();
-  //   // console.log(data);
-  //   setResponseSummary(data.data);
-  //   setSummaryFilterButtonPressed(false);
-  //   toast.success("Filters Applied successfully", toastsettings);
-  // };
-  const fetchDataFromAPIwithParams = async () => {}
+  const fetchDataFromAPIwithParams = async () => {
+    if (!fromDate || !toDate || metrics.length === 0) {
+      toast.info("Please select all the filters", toastsettings);
+      return;
+    }
+    setSummaryFilterButtonPressed(true);
+    // summary GET API
+    var metric_query = "";
+    const queryParams = new URLSearchParams();
+    if (fileType) queryParams.append("post_type", fileType);
+    if (fromDate) queryParams.append("metric_start_date", fromDate);
+    if (toDate) queryParams.append("metric_end_date", toDate);
+    if (metrics) {
+      const modified_metrices = removeWhitespace(metrics);
+      metric_query = modified_metrices.join(",");
+      queryParams.append("metrics", metric_query);
+    }
+    // console.log(queryParams);
+    // console.log(queryParams.toString());
+    const response = await fetch(
+      `${BASE_URL}/analytic/page/summary/?${queryParams}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("access_token")}`,
+        },
+      }
+    );
+    const data = await response.json();
+    // console.log(data);
+    setResponseSummary(data.data);
+    setSummaryFilterButtonPressed(false);
+    toast.success("Filters Applied successfully", toastsettings);
+  };
+  // const fetchDataFromAPIwithParams = async () => {}
   const navbarItems = [
     {
       linkName: "Filter by",
@@ -231,12 +239,10 @@ const AnalyticsLanding = () => {
 
   const [hoveredIndex2, setHoveredIndex2] = useState(null);
   const [fileType2, setFileType2] = useState("");
-  const [topMetricBy, setTopMetricBy] = useState("total_comments");
+  const [topMetricBy, setTopMetricBy] = useState("post_impressions");
   const [metrics2, setMetrics2] = useState([
-    "total_reactions",
-    "total_shares",
-    "post_impressions",
     "post_video_views_3s",
+    "post_video_views_15s",
   ]);
   const handleMouseEnter2 = (index) => {
     setHoveredIndex2(index);
@@ -418,15 +424,14 @@ const AnalyticsLanding = () => {
   const [topPageResponse, setTopPageResponse] = useState();
   const [hoveredIndex3, setHoveredIndex3] = useState(null);
   const [fileType3, setFileType3] = useState("");
-  const [topMetricBy3, setTopMetricBy3] = useState("total_comments");
+  const [topMetricBy3, setTopMetricBy3] = useState("page_follows");
   const [dropdownOpen3, setDropdownOpen3] = useState(false);
   const [fromDate3, setFromDate3] = useState(getDateNDaysEarlier(7));
   const [toDate3, setToDate3] = useState(default_from_date);
   const trigger3 = useRef(null);
   const dropdown3 = useRef(null);
   const [metrics3, setMetrics3] = useState([
-    "total_reactions",
-    "total_shares",
+    "post_video_views_15s",
     "post_impressions",
     "post_video_views_3s",
   ]);
@@ -705,8 +710,19 @@ const AnalyticsLanding = () => {
                   className="flex flex-col gap-4 bg-[#f5f5f5] p-4 rounded-md w-[15rem]"
                   key={index}
                 >
-                  <div className="flex">
+                  <div className="flex items-center gap-3">
                     <h1>{item.label}</h1>
+                    <InfoIcon
+                      size={20}
+                      className="text-gray-500 cursor-pointer"
+                      onMouseEnter={() => handleHoveredSummary(index)}
+                      onMouseLeave={handleMouseLeaveSummary}
+                    />
+                    {hoveredSummary === index &&
+                        <div className="absolute bg-white dark:bg-black p-2 rounded-md shadow-md mt-14">
+                          <h1>{item.description}</h1>
+                        </div>
+                      }
                   </div>
                   <div className="flex gap-4 items-end">
                     <h1 className="font-bold text-xl">{item.value}</h1>

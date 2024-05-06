@@ -64,7 +64,7 @@ const AddCampaign = ({ close }) => {
     );
   };
 const handleFileChangeReels = (e) => {
-  setContentType("reels");
+  setContentType("video_reels");
   const file = e.target.files[0];
   console.log(file)
   const type = file.type.split("/")[0];
@@ -89,6 +89,7 @@ const handleFileChangeReels = (e) => {
         return;
       }
       console.log(durationInSeconds);
+      console.log(video.videoWidth/video.videoHeight);
       if (
         video.videoWidth >= minWidth &&
         video.videoHeight >= minHeight &&
@@ -186,9 +187,15 @@ const handleFileChangeReels = (e) => {
   }
   const [buttonClicked, setButtonClicked] = useState(false);
   const handleClick = async () => {
-    if ((!campaignName, !selectedCountries, !tag, !content)) {
+    if ((!campaignName, !selectedCountries)) {
       toast.error("Enter all fields", toastsettings);
       return;
+    }
+    if(contentType==="feed"){
+      if(!content){
+        toast.error("Enter all fields", toastsettings);
+        return;
+      }
     }
     const array_data = extractIds(selectedCountries);
     console.log(
@@ -390,9 +397,9 @@ const handleFileChangeReels = (e) => {
                     <Picker data={data} onEmojiSelect={handleEmojiSelect} />
                   </div>
                 )}
-                <div className="flex text-gray-600 ml-4">
-                  <h1 className="flex">Content Type : {contentType}</h1>
-                </div>
+                {/*<div className="flex text-gray-600 ml-4">*/}
+                {/*  <h1 className="flex">Content Type : {contentType}</h1>*/}
+                {/*</div>*/}
               </div>
 
               <div className="flex justify-end ">
