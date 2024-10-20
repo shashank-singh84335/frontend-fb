@@ -87,10 +87,10 @@ const AnalyticsLanding = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [fileType, setFileType] = useState("");
   const [metrics, setMetrics] = useState([
-    " post_impressions",
-    " post_video_views_3s",
-    "total_comments",
-    " total_shares",
+    "page_video_views",
+    "page_follows",
+    "page_impressions",
+    "page_fans",
   ]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -210,31 +210,31 @@ const AnalyticsLanding = () => {
       linkName: "Filter by",
       sublinks: metrics_data,
     },
-    {
-      linkName: "Content Type",
-      sublinks: [
-        {
-          id: 1,
-          linkName: "All",
-          links_id: "",
-        },
-        {
-          id: 2,
-          linkName: "Photos",
-          links_id: "photos",
-        },
-        {
-          id: 3,
-          linkName: "Videos",
-          links_id: "videos",
-        },
-        {
-          id: 4,
-          linkName: "Feed",
-          links_id: "feed",
-        },
-      ],
-    },
+    // {
+    //   linkName: "Content Type",
+    //   sublinks: [
+    //     {
+    //       id: 1,
+    //       linkName: "All",
+    //       links_id: "",
+    //     },
+    //     {
+    //       id: 2,
+    //       linkName: "Photos",
+    //       links_id: "photos",
+    //     },
+    //     {
+    //       id: 3,
+    //       linkName: "Videos",
+    //       links_id: "videos",
+    //     },
+    //     {
+    //       id: 4,
+    //       linkName: "Feed",
+    //       links_id: "feed",
+    //     },
+    //   ],
+    // },
   ];
 
   const [hoveredIndex2, setHoveredIndex2] = useState(null);

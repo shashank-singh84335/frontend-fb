@@ -6,13 +6,14 @@ import { useAppState } from "../utils/Context";
 import AnalyticsLanding from "../components/Dashboard/TabComponent/Analytics/AnalyticsLanding";
 import { BASE_URL } from "../data";
 import Cookies from "js-cookie";
+import ReportsLanding from "../components/Dashboard/Reports/ReportsLanding";
 
-const AnalyticsMain = () => {
+const ReportsMain = () => {
   const { metricNames, setMetricNames } = useAppState();
   const { sidebarOpen, setSidebarOpen } = useAppState();
   useEffect(() => {
-    const fetchMetricsNames=async()=>{
-      const response = await fetch(`${BASE_URL}/analytic/metric/names/?type=page`, {
+    const fetchMetricsNames = async () => {
+      const response = await fetch(`${BASE_URL}/analytic/metric/names/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -26,8 +27,8 @@ const AnalyticsMain = () => {
         // setMetricNames(data.data.map((item) => item.metric_name));
         // trim the metric names
         setMetricNames(data.data.map((item) => item.metric_name.trim()));
-      }      
-    }
+      }
+    };
     fetchMetricsNames();
   }, []);
   return (
@@ -38,14 +39,14 @@ const AnalyticsMain = () => {
           <Sidebar />
         </div>
         <div className="flex w-5/6 ml-[18%]">
-          <AnalyticsLanding />
+          <ReportsLanding />
         </div>
       </div>
       <div className="sm:hidden flex w-full justify-center">
-        {sidebarOpen ? <Sidebar /> : <AnalyticsLanding />}
+        {sidebarOpen ? <Sidebar /> : <ReportsLanding />}
       </div>
     </>
   );
 };
 
-export default AnalyticsMain;
+export default ReportsMain;

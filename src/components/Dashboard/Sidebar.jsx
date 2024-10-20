@@ -1,4 +1,4 @@
-import { BarChartHorizontal, Clock2, Mail, Power, Users, X } from "lucide-react";
+import { BarChartHorizontal, ClipboardPaste, Clock2, Mail, Power, Users, X } from "lucide-react";
 import { useAppState } from "../../utils/Context";
 // import { useTheme } from 'next-themes';
 import { useEffect } from "react";
@@ -129,6 +129,25 @@ const Sidebar = () => {
             >
               <BarChartHorizontal size={20} className="ml-6" />
               <h1>Analytics</h1>
+            </button>
+          </div>
+          <div
+            className="flex"
+            onClick={() => {
+              setState("reports");
+              navigate("/dashboard/reports");
+              setSidebarOpen(false);
+            }}
+          >
+            <button
+              className={`flex w-full items-center p-2 rounded-md ${
+                state === "reports"
+                  ? "bg-primary text-white border-primary"
+                  : "bg-[#f5f5f5] dark:bg-[#26282A] dark:border-[#26282A] border-[#f5f5f5] hover:border-primary hover:dark:border-primary"
+              }  gap-4 h-[3rem] border-[3px] transform-all duration-300`}
+            >
+              <ClipboardPaste size={20} className="ml-6" />
+              <h1>Reports</h1>
             </button>
           </div>
         </div>

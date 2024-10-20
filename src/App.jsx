@@ -16,6 +16,7 @@ import { ToastContainer } from "react-toastify";
 import AnalyticsMain from "./pages/AnalyticsMain";
 import TopPostViewAll from "./components/Dashboard/TabComponent/Analytics/TopPostViewAll";
 import TopPagesViewAll from "./components/Dashboard/TabComponent/Analytics/TopPagesViewAll";
+import ReportsMain from './pages/ReportsMain';
 function App() {
   // useEffect(() => {
   //   const refreshAccessToken = async () => {
@@ -135,6 +136,14 @@ function App() {
             element={
               <PrivateRoute>
                 <FacebookLogin />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/dashboard/reports"
+            element={
+              <PrivateRoute>
+                <ReportsMain />
               </PrivateRoute>
             }
           />
